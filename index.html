@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRG Vote Hub</title>
+<style>
+* { box-sizing: border-box; }
+
+:root {
+  --bg-1: #111;
+  --bg-2: #050505;
+  --card-1: #1b1b1b;
+  --card-2: #0a0a0a;
+  --border: #3a3a3a;
+  --red-1: #a31212;
+  --red-2: #ff2f2f;
+  --red-soft: #ffb3b3;
+  --gold-1: #7a4a00;
+  --gold-2: #d18800;
+  --text: #ffffff;
+  --muted: #d7d7d7;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top center, rgba(200,0,0,0.18), transparent 32%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  color: var(--text);
+}
+
+.container {
+  max-width: 760px;
+  margin: auto;
+  padding: 12px;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--card-1), var(--card-2));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.22);
+}
+
+.card:hover {
+  border-color: rgba(255, 70, 70, 0.4);
+}
+
+.hero {
+  text-align: center;
+  border: 1px solid #5a1a1a;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top center, rgba(255, 0, 0, 0.12), transparent 48%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.08), transparent 65%);
+  filter: blur(10px);
+  animation: heroPulse 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes heroPulse {
+  0%   { opacity: 0.55; transform: translateX(-50%) scale(0.95); }
+  50%  { opacity: 0.95; transform: translateX(-50%) scale(1.06); }
+  100% { opacity: 0.55; transform: translateX(-50%) scale(0.95); }
+}
+
+.hero-logo {
+  width: 96px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+  animation: dragonGlow 2.8s ease-in-out infinite;
+}
+
+@keyframes dragonGlow {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px rgba(255,0,0,0.35)) drop-shadow(0 0 10px rgba(255,0,0,0.25));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(255,0,0,0.7)) drop-shadow(0 0 25px rgba(255,0,0,0.4));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px rgba(255,0,0,0.35)) drop-shadow(0 0 10px rgba(255,0,0,0.25));
+  }
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0 0 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.subtitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: #f0c7c7;
+  position: relative;
+  z-index: 1;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red-soft);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 34px;
+  height: 2px;
+  background: linear-gradient(90deg, #ff3b3b, transparent);
+  opacity: 0.8;
+}
+
+.main-btn,
+.group-btn,
+.action-btn,
+.secondary-btn {
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.main-btn:hover,
+.group-btn:hover,
+.action-btn:hover,
+.secondary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.main-btn:active,
+.group-btn:active,
+.action-btn:active,
+.secondary-btn:active {
+  transform: scale(0.98);
+}
+
+.main-btn {
+  background: linear-gradient(90deg, var(--red-1), var(--red-2));
+  letter-spacing: 0.12em;
+}
+
+.group-btn {
+  background: linear-gradient(90deg, #5c1010, #b32020);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.action-btn {
+  background: linear-gradient(90deg, var(--gold-1), var(--gold-2));
+  font-size: 12px;
+}
+
+.secondary-btn {
+  background: linear-gradient(90deg, #232323, #353535);
+  font-size: 12px;
+}
+
+.server-link {
+  display: block;
+  padding: 11px;
+  margin-top: 6px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid #2f2f2f;
+  transition: all 0.15s ease;
+}
+
+.server-link:hover {
+  border-color: #a82929;
+  background: #201111;
+  transform: translateY(-1px);
+}
+
+.note,
+.warning,
+.status,
+.helper-box,
+.link-dump {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.note {
+  background: linear-gradient(180deg, rgba(18,18,18,0.98), rgba(10,10,10,0.98));
+  border: 1px solid rgba(255,255,255,0.06);
+  text-align: left;
+  color: #e7e7e7;
+  position: relative;
+  z-index: 1;
+}
+
+.note p { margin: 0 0 10px; }
+.note p:last-child { margin-bottom: 0; }
+
+.note-highlight {
+  padding: 8px 10px;
+  margin: 10px 0;
+  border-left: 3px solid rgba(255, 90, 90, 0.7);
+  background: rgba(255, 30, 30, 0.07);
+  border-radius: 6px;
+  color: #ffd0d0;
+}
+
+.warning {
+  background: #2a1400;
+  color: #ffd9a3;
+  border: 1px solid rgba(255, 183, 77, 0.18);
+}
+
+.status {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.status.success {
+  border-color: rgba(80,180,80,0.35);
+}
+
+.status.warn {
+  border-color: rgba(255,170,50,0.35);
+}
+
+.helper-box,
+.link-dump {
+  background: #161616;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.link-dump textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  margin-top: 10px;
+  background: #0e0e0e;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+.status a,
+.helper-box a,
+.link-dump a {
+  color: #ffb3b3;
+  word-break: break-all;
+}
+
+.actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.hidden { display: none; }
+
+@media (max-width: 560px) {
+  .container {
+    padding: 8px;
+  }
+
+  .card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .hero-logo {
+    width: 84px;
+  }
+
+  h1 {
+    font-size: 21px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .actions-row {
+    grid-template-columns: 1fr;
+  }
+
+  .main-btn,
+  .group-btn,
+  .action-btn,
+  .secondary-btn,
+  .server-link,
+  .note,
+  .warning,
+  .status,
+  .helper-box,
+  .link-dump,
+  .link-dump textarea {
+    font-size: 12px;
+  }
+
+  .hero::after {
+    width: 220px;
+    height: 220px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="card hero">
+    <img src="dragon.png" class="hero-logo" alt="PRG Dragon Emblem">
+    <h1>PRG Vote Hub</h1>
+    <p class="subtitle">Desktop + mobile friendly vote launcher for all PRG links</p>
+
+    <button class="main-btn" onclick="handleOpen(allLinks)">OPEN ALL VOTES</button>
+
+    <div class="actions-row">
+      <button class="action-btn" onclick="copyAllLinks()">COPY ALL LINKS</button>
+      <button class="secondary-btn" onclick="toggleLinkDump()">SHOW BACKUP LINK LIST</button>
+    </div>
+
+    <div class="note">
+      <p>Opens every PRG vote page in one place.</p>
+      <p>⚠️ This does <strong>not</strong> vote automatically. It only opens the pages for you.</p>
+
+      <div class="note-highlight">
+        Desktop: if some tabs do not open, allow popups for this page and press <strong>OPEN ALL VOTES</strong> again.
+      </div>
+
+      <p>📱 iPhone users: open this page in <strong>Safari</strong> for the best results.</p>
+      <p>💡 If your browser blocks mass-opening tabs, use the game buttons below or the backup link list.</p>
+      <p>Thank you for supporting PRG ❤️</p>
+    </div>
+
+    <div id="iphoneWarning" class="warning hidden">
+      <strong>iPhone / iPad users</strong><br>
+      If you opened this page from Discord, Facebook, or another app, use <strong>Safari</strong> for the best results.<br><br>
+      <button class="action-btn" onclick="openInSafari()">HOW TO OPEN IN SAFARI</button>
+    </div>
+
+    <div id="helperBox" class="helper-box hidden"></div>
+    <div id="status" class="status hidden"></div>
+
+    <div id="linkDump" class="link-dump hidden">
+      <strong>Backup Link List</strong><br>
+      If your browser blocks popups, copy these or open them one by one.
+      <textarea id="allLinksText" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🧟 7 Days to Die</h3>
+    <button class="group-btn" onclick="handleOpen(links7d2d)">OPEN ALL 7DTD</button>
+    <a class="server-link" href="https://7daystodie-servers.com/server/90387/" target="_blank" rel="noopener noreferrer">X</a>
+    <a class="server-link" href="https://7daystodie-servers.com/server/90388/" target="_blank" rel="noopener noreferrer">XL</a>
+    <a class="server-link" href="https://7daystodie-servers.com/server/90386/" target="_blank" rel="noopener noreferrer">SH</a>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">⚔️ Conan Exiles</h3>
+    <button class="group-btn" onclick="handleOpen(linksConan)">OPEN ALL CONAN</button>
+    <a class="server-link" href="https://conan-exiles.com/server/90870/" target="_blank" rel="noopener noreferrer">EL</a>
+    <a class="server-link" href="https://conan-exiles.com/server/90985/" target="_blank" rel="noopener noreferrer">SEB</a>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🚀 Empyrion</h3>
+    <button class="group-btn" onclick="handleOpen(linksEmpyrion)">OPEN ALL EMPYRION</button>
+    <a class="server-link" href="https://empyrion-servers.com/server/65230/" target="_blank" rel="noopener noreferrer">Empyrion</a>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🦖 ARK</h3>
+    <button class="group-btn" onclick="handleOpen(linksArk)">OPEN ALL ARK</button>
+    <a class="server-link" href="https://ark-servers.net/server/331423/" target="_blank" rel="noopener noreferrer">Rag</a>
+    <a class="server-link" href="https://ark-servers.net/server/330408/" target="_blank" rel="noopener noreferrer">Fjordur</a>
+    <a class="server-link" href="https://ark-servers.net/server/330422/" target="_blank" rel="noopener noreferrer">Gen2</a>
+  </div>
+
+</div>
+
+<script>
+const links7d2d = [
+  "https://7daystodie-servers.com/server/90387/",
+  "https://7daystodie-servers.com/server/90388/",
+  "https://7daystodie-servers.com/server/90386/"
+];
+
+const linksConan = [
+  "https://conan-exiles.com/server/90870/",
+  "https://conan-exiles.com/server/90985/"
+];
+
+const linksEmpyrion = [
+  "https://empyrion-servers.com/server/65230/"
+];
+
+const linksArk = [
+  "https://ark-servers.net/server/331423/",
+  "https://ark-servers.net/server/330408/",
+  "https://ark-servers.net/server/330422/"
+];
+
+const allLinks = [...links7d2d, ...linksConan, ...linksEmpyrion, ...linksArk];
+
+function isIphone() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+if (isIphone()) {
+  document.getElementById("iphoneWarning").classList.remove("hidden");
+}
+
+document.getElementById("allLinksText").value = allLinks.join("\n");
+
+function handleOpen(links) {
+  const status = document.getElementById("status");
+  status.className = "status";
+  status.classList.remove("hidden");
+
+  let opened = 0;
+  let blocked = 0;
+
+  links.forEach((url) => {
+    const newTab = window.open(url, "_blank", "noopener,noreferrer");
+    if (newTab) {
+      opened += 1;
+    } else {
+      blocked += 1;
+    }
+  });
+
+  if (blocked === 0) {
+    status.classList.add("success");
+    status.innerHTML = `Opened <strong>${opened}</strong> tab(s) successfully.`;
+  } else {
+    status.classList.add("warn");
+    status.innerHTML = `Opened <strong>${opened}</strong> tab(s). <strong>${blocked}</strong> were blocked by your browser.<br><br>${isMobile() ? 'Try opening in Safari or your main browser, or use the backup link list.' : 'Allow popups for this page, then click again. You can also use the backup link list or the individual game buttons.'}`;
+  }
+}
+
+function openInSafari() {
+  const helper = document.getElementById("helperBox");
+  helper.classList.remove("hidden");
+  helper.innerHTML = `Tap your app’s <strong>Share</strong> button and choose <strong>Open in Safari</strong>.<br><br>Or copy this page link:<br><br><a href="${window.location.href}">${window.location.href}</a>`;
+}
+
+function toggleLinkDump() {
+  const dump = document.getElementById("linkDump");
+  dump.classList.toggle("hidden");
+}
+
+async function copyAllLinks() {
+  const status = document.getElementById("status");
+  status.className = "status";
+  status.classList.remove("hidden");
+
+  const text = allLinks.join("\n");
+
+  try {
+    await navigator.clipboard.writeText(text);
+    status.classList.add("success");
+    status.innerHTML = "Copied all vote links to your clipboard.";
+  } catch (err) {
+    status.classList.add("warn");
+    status.innerHTML = "Clipboard copy was blocked. Use the backup link list below to copy them manually.";
+    document.getElementById("linkDump").classList.remove("hidden");
+  }
+}
+</script>
+</body>
+</html>
