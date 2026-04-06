@@ -19,10 +19,7 @@
   --gold-1: #7a4a00;
   --gold-2: #d18800;
   --text: #ffffff;
-  --muted: #d7d7d7;
 }
-
-html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -152,8 +149,7 @@ h1 {
 
 .main-btn,
 .group-btn,
-.action-btn,
-.secondary-btn {
+.action-btn {
   width: 100%;
   padding: 13px;
   margin-bottom: 10px;
@@ -168,16 +164,14 @@ h1 {
 
 .main-btn:hover,
 .group-btn:hover,
-.action-btn:hover,
-.secondary-btn:hover {
+.action-btn:hover {
   transform: translateY(-1px);
   filter: brightness(1.08);
 }
 
 .main-btn:active,
 .group-btn:active,
-.action-btn:active,
-.secondary-btn:active {
+.action-btn:active {
   transform: scale(0.98);
 }
 
@@ -194,11 +188,6 @@ h1 {
 
 .action-btn {
   background: linear-gradient(90deg, var(--gold-1), var(--gold-2));
-  font-size: 12px;
-}
-
-.secondary-btn {
-  background: linear-gradient(90deg, #232323, #353535);
   font-size: 12px;
 }
 
@@ -224,8 +213,7 @@ h1 {
 .note,
 .warning,
 .status,
-.helper-box,
-.link-dump {
+.helper-box {
   margin-top: 12px;
   padding: 12px;
   border-radius: 12px;
@@ -245,13 +233,22 @@ h1 {
 .note p { margin: 0 0 10px; }
 .note p:last-child { margin-bottom: 0; }
 
-.note-highlight {
-  padding: 8px 10px;
-  margin: 10px 0;
-  border-left: 3px solid rgba(255, 90, 90, 0.7);
-  background: rgba(255, 30, 30, 0.07);
-  border-radius: 6px;
-  color: #ffd0d0;
+.popup-warning {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(60,18,0,0.95), rgba(35,12,0,0.95));
+  border: 1px solid rgba(255, 166, 77, 0.34);
+  color: #ffd9a3;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+
+.popup-warning strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #fff1d1;
 }
 
 .warning {
@@ -273,39 +270,15 @@ h1 {
   border-color: rgba(255,170,50,0.35);
 }
 
-.helper-box,
-.link-dump {
+.helper-box {
   background: #161616;
   border: 1px solid rgba(255,255,255,0.05);
 }
 
-.link-dump textarea {
-  width: 100%;
-  min-height: 180px;
-  resize: vertical;
-  margin-top: 10px;
-  background: #0e0e0e;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 10px;
-  padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-}
-
 .status a,
-.helper-box a,
-.link-dump a {
+.helper-box a {
   color: #ffb3b3;
   word-break: break-all;
-}
-
-.actions-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  position: relative;
-  z-index: 1;
 }
 
 .hidden { display: none; }
@@ -332,21 +305,15 @@ h1 {
     font-size: 13px;
   }
 
-  .actions-row {
-    grid-template-columns: 1fr;
-  }
-
   .main-btn,
   .group-btn,
   .action-btn,
-  .secondary-btn,
   .server-link,
   .note,
   .warning,
   .status,
   .helper-box,
-  .link-dump,
-  .link-dump textarea {
+  .popup-warning {
     font-size: 12px;
   }
 
@@ -365,23 +332,18 @@ h1 {
     <h1>PRG Vote Hub</h1>
     <p class="subtitle">Desktop + mobile friendly vote launcher for all PRG links</p>
 
-    <button class="main-btn" onclick="handleOpen(allLinks)">OPEN ALL VOTES</button>
-
-    <div class="actions-row">
-      <button class="action-btn" onclick="copyAllLinks()">COPY ALL LINKS</button>
-      <button class="secondary-btn" onclick="toggleLinkDump()">SHOW BACKUP LINK LIST</button>
+    <div class="popup-warning">
+      <strong>Important for desktop users:</strong>
+      Your browser must allow popups for this page or <strong>OPEN ALL VOTES</strong> may not open every voting tab.<br><br>
+      If some tabs do not open, allow popups for this page and try again, or use the individual game buttons below.
     </div>
+
+    <button class="main-btn" onclick="handleOpen(allLinks)">OPEN ALL VOTES</button>
 
     <div class="note">
       <p>Opens every PRG vote page in one place.</p>
       <p>⚠️ This does <strong>not</strong> vote automatically. It only opens the pages for you.</p>
-
-      <div class="note-highlight">
-        Desktop: if some tabs do not open, allow popups for this page and press <strong>OPEN ALL VOTES</strong> again.
-      </div>
-
       <p>📱 iPhone users: open this page in <strong>Safari</strong> for the best results.</p>
-      <p>💡 If your browser blocks mass-opening tabs, use the game buttons below or the backup link list.</p>
       <p>Thank you for supporting PRG ❤️</p>
     </div>
 
@@ -393,12 +355,6 @@ h1 {
 
     <div id="helperBox" class="helper-box hidden"></div>
     <div id="status" class="status hidden"></div>
-
-    <div id="linkDump" class="link-dump hidden">
-      <strong>Backup Link List</strong><br>
-      If your browser blocks popups, copy these or open them one by one.
-      <textarea id="allLinksText" readonly></textarea>
-    </div>
   </div>
 
   <div class="card">
@@ -468,8 +424,6 @@ if (isIphone()) {
   document.getElementById("iphoneWarning").classList.remove("hidden");
 }
 
-document.getElementById("allLinksText").value = allLinks.join("\n");
-
 function handleOpen(links) {
   const status = document.getElementById("status");
   status.className = "status";
@@ -492,7 +446,7 @@ function handleOpen(links) {
     status.innerHTML = `Opened <strong>${opened}</strong> tab(s) successfully.`;
   } else {
     status.classList.add("warn");
-    status.innerHTML = `Opened <strong>${opened}</strong> tab(s). <strong>${blocked}</strong> were blocked by your browser.<br><br>${isMobile() ? 'Try opening in Safari or your main browser, or use the backup link list.' : 'Allow popups for this page, then click again. You can also use the backup link list or the individual game buttons.'}`;
+    status.innerHTML = `Opened <strong>${opened}</strong> tab(s). <strong>${blocked}</strong> were blocked by your browser.<br><br>${isMobile() ? 'Try opening this page in Safari or your main browser, then try again.' : 'Allow popups for this page, then click again. You can also use the individual game buttons below.'}`;
   }
 }
 
@@ -500,29 +454,6 @@ function openInSafari() {
   const helper = document.getElementById("helperBox");
   helper.classList.remove("hidden");
   helper.innerHTML = `Tap your app’s <strong>Share</strong> button and choose <strong>Open in Safari</strong>.<br><br>Or copy this page link:<br><br><a href="${window.location.href}">${window.location.href}</a>`;
-}
-
-function toggleLinkDump() {
-  const dump = document.getElementById("linkDump");
-  dump.classList.toggle("hidden");
-}
-
-async function copyAllLinks() {
-  const status = document.getElementById("status");
-  status.className = "status";
-  status.classList.remove("hidden");
-
-  const text = allLinks.join("\n");
-
-  try {
-    await navigator.clipboard.writeText(text);
-    status.classList.add("success");
-    status.innerHTML = "Copied all vote links to your clipboard.";
-  } catch (err) {
-    status.classList.add("warn");
-    status.innerHTML = "Clipboard copy was blocked. Use the backup link list below to copy them manually.";
-    document.getElementById("linkDump").classList.remove("hidden");
-  }
 }
 </script>
 </body>
