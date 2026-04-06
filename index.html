@@ -235,8 +235,8 @@ h1 {
 
 .popup-warning {
   margin-top: 14px;
-  padding: 14px;
-  border-radius: 12px;
+  padding: 16px 18px;
+  border-radius: 14px;
   background: linear-gradient(180deg, rgba(60,18,0,0.95), rgba(35,12,0,0.95));
   border: 1px solid rgba(255, 166, 77, 0.34);
   color: #ffd9a3;
@@ -245,10 +245,27 @@ h1 {
   z-index: 1;
 }
 
-.popup-warning strong {
+.popup-warning-title {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   color: #fff1d1;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.popup-warning p {
+  margin: 0;
+}
+
+.popup-warning p + p {
+  margin-top: 12px;
+}
+
+@media (max-width: 560px) {
+  .popup-warning-title {
+    font-size: 16px;
+  }
 }
 
 .warning {
@@ -333,9 +350,9 @@ h1 {
     <p class="subtitle">Desktop + mobile friendly vote launcher for all PRG links</p>
 
     <div class="popup-warning">
-      <strong>Important for desktop users:</strong>
-      Your browser must allow popups for this page or <strong>OPEN ALL VOTES</strong> may not open every voting tab.<br><br>
-      If some tabs do not open, allow popups for this page and try again, or use the individual game buttons below.
+      <span class="popup-warning-title">Important for desktop users</span>
+      <p>Your browser must allow popups for this page or the <strong>Open All Votes</strong> button may not open every voting tab.</p>
+      <p>If some tabs do not open, allow popups for this page and try again, or use the individual game buttons below.</p>
     </div>
 
     <button class="main-btn" onclick="handleOpen(allLinks)">OPEN ALL VOTES</button>
