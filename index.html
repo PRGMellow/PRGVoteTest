@@ -11,9 +11,6 @@
 :root {
   --bg-1: #111;
   --bg-2: #050505;
-  --card-1: #1b1b1b;
-  --card-2: #0a0a0a;
-  --border: #323232;
   --red-1: #9f1111;
   --red-2: #ff2d2d;
 }
@@ -40,7 +37,6 @@ body {
   padding: 16px;
   margin-bottom: 12px;
   position: relative;
-  overflow: hidden;
   background: linear-gradient(180deg, #1b1b1b, #0a0a0a);
   box-shadow:
     0 0 40px rgba(255,40,40,0.06),
@@ -59,10 +55,9 @@ body {
 
 .hero-logo {
   width: 88px;
-  margin-bottom: 8px;
 }
 
-h1 { margin: 0 0 6px; }
+h1 { margin: 6px 0; }
 
 .subtitle {
   font-size: 13px;
@@ -72,7 +67,6 @@ h1 { margin: 0 0 6px; }
 /* TEXT GLOW */
 .support-line {
   margin: 12px 0;
-  font-weight: 600;
   animation: glowPulse 3.5s ease-in-out infinite;
 }
 
@@ -89,10 +83,9 @@ h1 { margin: 0 0 6px; }
   font-weight: 800;
   border-radius: 12px;
   border: none;
+  background: linear-gradient(90deg, var(--red-1), var(--red-2));
   color: #fff;
   cursor: pointer;
-  background: linear-gradient(90deg, var(--red-1), var(--red-2));
-  margin-bottom: 8px;
   animation: buttonPulse 4s ease-in-out infinite;
 }
 
@@ -104,35 +97,20 @@ h1 { margin: 0 0 6px; }
 
 /* NOTICE */
 .premium-notice {
-  margin-bottom: 14px;
-  padding: 14px;
-  border-radius: 16px;
+  margin: 12px 0;
+  padding: 12px;
+  border-radius: 14px;
   background: rgba(56,20,0,0.9);
   border: 1px solid rgba(255,153,51,0.35);
   text-align: left;
+  font-size: 13px;
 }
 
-.premium-title {
-  font-weight: 800;
-}
-
-.premium-desc {
-  font-size: 14px;
-  color: #ffe1b8;
-}
-
-.mobile-tip {
-  display: none;
-  font-size: 12px;
-  color: #d8baba;
-  margin-bottom: 10px;
-}
-
-.mobile-tip.show { display: block; }
-
-.micro-note {
+/* SHORT FALLBACK LINE */
+.fallback-line {
   font-size: 12px;
   color: #d7c9c9;
+  margin-top: 8px;
 }
 
 /* CARDS */
@@ -167,16 +145,6 @@ h1 { margin: 0 0 6px; }
   color: #fff;
 }
 
-.status {
-  margin-top: 10px;
-  padding: 10px;
-  background: #111;
-  border-radius: 10px;
-  display: none;
-}
-
-.status.show { display: block; }
-
 </style>
 </head>
 
@@ -194,21 +162,16 @@ h1 { margin: 0 0 6px; }
 <p class="support-line">Thank you for supporting PRG! ❤️</p>
 
 <div class="premium-notice">
-  <div class="premium-title">Allow popups for this page</div>
-  <p class="premium-desc">Open All Votes may not open all tabs without it.</p>
+Allow popups for this page — Open All Votes may not open every tab.
 </div>
 
-<button class="main-btn" onclick="handleOpen(allLinks)">OPEN ALL VOTES</button>
+<button class="main-btn" onclick="handleOpen(allLinks)">
+OPEN ALL VOTES
+</button>
 
-<div id="mobileTip" class="mobile-tip">
-📱 Open in Safari or your main browser for best results
+<div class="fallback-line">
+If tabs don’t open, use the game buttons below.
 </div>
-
-<div class="micro-note">
-Opens all PRG vote pages in one click. Voting is still manual.
-</div>
-
-<div id="status" class="status"></div>
 
 </div>
 
@@ -229,10 +192,9 @@ Opens all PRG vote pages in one click. Voting is still manual.
 <a class="server-link" href="https://conan-exiles.com/server/90985/" target="_blank">SEB</a>
 </div>
 
-<!-- Empyrion -->
+<!-- Empyrion (single link, clean) -->
 <div class="card">
 <h3 class="section-title">🚀 Empyrion</h3>
-<button class="group-btn" onclick="handleOpen(linksEmpyrion)">OPEN ALL EMPYRION</button>
 <a class="server-link" href="https://empyrion-servers.com/server/65230/" target="_blank">Empyrion</a>
 </div>
 
@@ -259,10 +221,6 @@ const linksConan = [
 "https://conan-exiles.com/server/90985/"
 ];
 
-const linksEmpyrion = [
-"https://empyrion-servers.com/server/65230/"
-];
-
 const linksArk = [
 "https://ark-servers.net/server/331423/",
 "https://ark-servers.net/server/330408/",
@@ -272,34 +230,12 @@ const linksArk = [
 const allLinks = [
 ...links7d2d,
 ...linksConan,
-...linksEmpyrion,
+"https://empyrion-servers.com/server/65230/",
 ...linksArk
 ];
 
-function isMobile() {
-  return /Android|iPhone|iPad/i.test(navigator.userAgent);
-}
-
-if (isMobile()) {
-  document.getElementById("mobileTip").classList.add("show");
-}
-
 function handleOpen(links) {
-  const status = document.getElementById("status");
-  status.classList.add("show");
-
-  let opened = 0;
-  let blocked = 0;
-
-  links.forEach(url => {
-    const tab = window.open(url, "_blank");
-    if (tab) opened++;
-    else blocked++;
-  });
-
-  status.innerHTML = blocked === 0
-    ? `Opened ${opened} tabs`
-    : `${opened} opened, ${blocked} blocked (allow popups)`;
+  links.forEach(url => window.open(url, "_blank"));
 }
 </script>
 
