@@ -1,243 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRG Vote Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRG Vote Hub</title>
+  <style>
+    :root {
+      --bg: #060606;
+      --bg-soft: #0d0d0f;
+      --card: rgba(18, 18, 21, 0.92);
+      --card-2: rgba(26, 14, 14, 0.9);
+      --text: #f7f4f2;
+      --muted: #beb8b4;
+      --soft: #8c8682;
+      --line: rgba(255, 255, 255, 0.08);
+      --accent: #d61117;
+      --accent-2: #ff2a31;
+      --accent-dark: #5c1a07;
+      --glow: rgba(214, 17, 23, 0.28);
+      --gold: #d8a25d;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.48);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 1180px;
+    }
 
-<style>
-* { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-:root {
-  --bg-1: #111;
-  --bg-2: #050505;
-  --red-1: #9f1111;
-  --red-2: #ff2d2d;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #fff;
-  background:
-    radial-gradient(circle at top center, rgba(255,0,0,0.12), transparent 28%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-2));
-}
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 14%, rgba(130, 0, 0, 0.22), transparent 28%),
+        radial-gradient(circle at 20% 0%, rgba(255, 0, 0, 0.08), transparent 18%),
+        radial-gradient(circle at 80% 10%, rgba(255, 0, 0, 0.05), transparent 16%),
+        linear-gradient(180deg, #090909 0%, #050505 100%);
+      min-height: 100vh;
+    }
 
-.container {
-  max-width: 760px;
-  margin: auto;
-  padding: 14px;
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-/* HERO */
-.hero {
-  text-align: center;
-  border-radius: 18px;
-  padding: 16px;
-  margin-bottom: 12px;
-  position: relative;
-  background: linear-gradient(180deg, #1b1b1b, #0a0a0a);
-  box-shadow:
-    0 0 40px rgba(255,40,40,0.06),
-    0 0 80px rgba(255,40,40,0.04);
-}
+    .shell {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: -40px;
-  background: radial-gradient(circle, rgba(255,0,0,0.08), transparent 60%);
-  filter: blur(40px);
-}
+    .hero-wrap {
+      padding: 28px 0 18px;
+    }
 
-.hero * { position: relative; z-index: 1; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      background:
+        linear-gradient(180deg, rgba(18, 18, 20, 0.96), rgba(8, 8, 9, 0.98)),
+        radial-gradient(circle at 50% 0%, rgba(255, 0, 0, 0.08), transparent 25%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
 
-.hero-logo {
-  width: 88px;
-}
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(214, 17, 23, 0.18), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 16%);
+      pointer-events: none;
+    }
 
-h1 { margin: 6px 0; }
+    .topbar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 34px;
+      z-index: 1;
+    }
 
-.subtitle {
-  font-size: 13px;
-  color: #e9c4c4;
-}
+    .brand-mini {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
 
-/* TEXT GLOW */
-.support-line {
-  margin: 12px 0;
-  animation: glowPulse 3.5s ease-in-out infinite;
-}
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      box-shadow: 0 0 18px var(--glow);
+    }
 
-@keyframes glowPulse {
-  0% { text-shadow: 0 0 4px rgba(255,50,50,0.2); }
-  50% { text-shadow: 0 0 14px rgba(255,60,60,0.45); }
-  100% { text-shadow: 0 0 4px rgba(255,50,50,0.2); }
-}
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 26px;
+      align-items: center;
+    }
 
-/* BUTTON */
-.main-btn {
-  width: 100%;
-  padding: 14px;
-  font-weight: 800;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(90deg, var(--red-1), var(--red-2));
-  color: #fff;
-  cursor: pointer;
-  animation: buttonPulse 4s ease-in-out infinite;
-}
+    .hero-copy {
+      max-width: 640px;
+    }
 
-@keyframes buttonPulse {
-  0% { box-shadow: 0 6px 16px rgba(255,30,30,0.15); }
-  50% { box-shadow: 0 0 16px rgba(255,50,50,0.35); }
-  100% { box-shadow: 0 6px 16px rgba(255,30,30,0.15); }
-}
+    .logo {
+      width: 104px;
+      display: block;
+      margin-bottom: 22px;
+      filter: drop-shadow(0 0 22px rgba(214, 17, 23, 0.22));
+    }
 
-/* NOTICE */
-.premium-notice {
-  margin: 12px 0;
-  padding: 12px;
-  border-radius: 14px;
-  background: rgba(56,20,0,0.9);
-  border: 1px solid rgba(255,153,51,0.35);
-  font-size: 13px;
-}
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2.2rem, 4vw, 4.1rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
 
-/* FALLBACK + WARNING */
-.fallback-line {
-  font-size: 12px;
-  color: #d7c9c9;
-  margin-top: 8px;
-}
+    .subtitle {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.2vw, 1.1rem);
+      line-height: 1.55;
+      max-width: 44ch;
+    }
 
-/* CARDS */
-.card {
-  background: linear-gradient(180deg, #1b1b1b, #0a0a0a);
-  border-radius: 18px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
+    .support-line {
+      margin: 0 0 24px;
+      color: #d6d1ce;
+      font-size: 1rem;
+      font-weight: 500;
+    }
 
-.section-title {
-  font-size: 14px;
-  color: #ffb3b3;
-}
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
 
-.server-link {
-  display: block;
-  padding: 10px;
-  margin-top: 6px;
-  background: #1a1a1a;
-  border-radius: 10px;
-  text-decoration: none;
-  color: #fff;
-}
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 56px;
+      padding: 0 24px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      font-size: 0.98rem;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      cursor: pointer;
+      text-align: center;
+    }
 
-.group-btn {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  background: linear-gradient(90deg, #5c1010, #b32020);
-  border-radius: 12px;
-  color: #fff;
-  border: none;
-}
+    .button:hover {
+      transform: translateY(-1px);
+    }
 
-</style>
+    .button-primary {
+      color: white;
+      background: linear-gradient(90deg, #b50f15 0%, #ff232b 100%);
+      box-shadow: 0 12px 30px rgba(214, 17, 23, 0.28);
+    }
+
+    .button-primary:hover {
+      box-shadow: 0 16px 36px rgba(214, 17, 23, 0.34);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.09);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      background: rgba(255, 255, 255, 0.055);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .micro {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--soft);
+      font-size: 0.92rem;
+    }
+
+    .micro span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, rgba(20, 20, 22, 0.9), rgba(12, 12, 13, 0.98));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .panel-title {
+      margin: 0 0 16px;
+      font-size: 1rem;
+      color: #f4eeea;
+      font-weight: 700;
+    }
+
+    .notice-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .notice {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .notice-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(214, 17, 23, 0.12);
+      color: #ffd7d9;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border: 1px solid rgba(214, 17, 23, 0.24);
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.96rem;
+    }
+
+    .notice p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.93rem;
+    }
+
+    .section {
+      padding: 18px 0 48px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.35rem, 2vw, 1.9rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-copy {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .utility-link {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .game-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(18,18,20,0.96), rgba(10,10,11,0.98));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .game-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+
+    .game-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .game-name {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .game-pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--muted);
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .game-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .vote-link {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #f0ece9;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      font-weight: 600;
+    }
+
+    .vote-link:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.055);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .vote-link small {
+      color: var(--soft);
+      font-weight: 500;
+    }
+
+    .vote-all {
+      margin-top: 14px;
+      width: 100%;
+    }
+
+    .support-grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .support-card {
+      background: linear-gradient(180deg, rgba(18,18,20,0.96), rgba(10,10,11,0.98));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .support-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .support-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.94rem;
+    }
+
+    .footer {
+      padding: 0 0 36px;
+      color: var(--soft);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .games-grid,
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 24px;
+      }
+
+      .topbar {
+        margin-bottom: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        width: min(var(--max), calc(100% - 18px));
+      }
+
+      .hero-wrap {
+        padding-top: 10px;
+      }
+
+      .hero,
+      .game-card,
+      .support-card {
+        border-radius: 22px;
+      }
+
+      .hero {
+        padding: 20px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 22px;
+      }
+
+      .logo {
+        width: 86px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        font-size: 2.3rem;
+      }
+
+      .subtitle,
+      .support-line {
+        max-width: none;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .game-row {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
-
 <body>
-<div class="container">
+  <div class="hero-wrap">
+    <div class="shell">
+      <section class="hero">
+        <div class="topbar">
+          <div class="brand-mini">
+            <span class="brand-dot"></span>
+            <span>PRG network voting hub</span>
+          </div>
+          <a class="utility-link" href="#games">Jump to game links ↓</a>
+        </div>
 
-<!-- HERO -->
-<div class="hero">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <img class="logo" src="https://raw.githubusercontent.com/prgmellow/prgmellow.github.io/main/images/prg-logo-red.png" alt="PRG logo" onerror="this.style.display='none'" />
+            <h1>PRG Vote Hub</h1>
+            <p class="subtitle">All voting links for every PRG server in one place. Fast access on desktop, simple manual voting on mobile.</p>
+            <p class="support-line">Thank you for supporting PRG ❤️</p>
 
-<img src="dragon.png" class="hero-logo">
+            <div class="hero-actions">
+              <button class="button button-primary" onclick="openAllVotes()">Open All Votes</button>
+              <a class="button button-secondary" href="#games">Browse by Game</a>
+            </div>
 
-<h1>PRG Vote Hub</h1>
-<p class="subtitle">One place for all PRG voting links</p>
+            <div class="micro">
+              <span>Desktop: allow popups</span>
+              <span>Mobile: open in browser</span>
+              <span>Voting is manual</span>
+            </div>
+          </div>
 
-<p class="support-line">Thank you for supporting PRG! ❤️</p>
+          <aside class="hero-panel">
+            <h2 class="panel-title">Before you start</h2>
+            <div class="notice-stack">
+              <div class="notice">
+                <div class="notice-icon">⚠</div>
+                <div>
+                  <strong>Desktop</strong>
+                  <p>Allow popups or the Open All button may not open every vote tab.</p>
+                </div>
+              </div>
+              <div class="notice">
+                <div class="notice-icon">📱</div>
+                <div>
+                  <strong>Mobile</strong>
+                  <p>Open this page in your browser, not inside Discord or another in-app browser.</p>
+                </div>
+              </div>
+              <div class="notice">
+                <div class="notice-icon">✓</div>
+                <div>
+                  <strong>Manual voting</strong>
+                  <p>If a tab does not open, use the game buttons below. Being logged into Steam can make voting faster.</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </div>
 
-<div class="premium-notice">
-Allow popups for this page — Open All Votes may not open every tab.
-</div>
+  <main class="section" id="games">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Vote by game</h2>
+          <p class="section-copy">Open all vote pages for a game or launch them one by one.</p>
+        </div>
+        <a class="utility-link" href="#top">Back to top ↑</a>
+      </div>
 
-<button class="main-btn" onclick="handleOpen(allLinks)">
-OPEN ALL VOTES
-</button>
+      <div class="games-grid">
+        <section class="game-card" data-game="7 Days to Die">
+          <div class="game-top">
+            <h3 class="game-name">🧟 7 Days to Die</h3>
+            <span class="game-pill">Most active</span>
+          </div>
+          <div class="game-row">
+            <a class="vote-link" href="#"><span>X</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>XL</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>SH</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>CPM</span><small>Open vote</small></a>
+          </div>
+          <button class="button button-primary vote-all" onclick="openGameVotes('7dtd')">Open All 7DTD</button>
+        </section>
 
-<div class="fallback-line">
-If tabs don’t open, use the game buttons below. All voting is done manually.
-</div>
+        <section class="game-card" data-game="Ark SE">
+          <div class="game-top">
+            <h3 class="game-name">🦖 Ark SE</h3>
+            <span class="game-pill">Legacy cluster</span>
+          </div>
+          <div class="game-row">
+            <a class="vote-link" href="#"><span>Server 1</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>Server 2</span><small>Open vote</small></a>
+          </div>
+          <button class="button button-secondary vote-all" onclick="openGameVotes('arkse')">Open All Ark SE</button>
+        </section>
 
-</div>
+        <section class="game-card" data-game="Ark SA">
+          <div class="game-top">
+            <h3 class="game-name">🦕 Ark SA</h3>
+            <span class="game-pill">Current</span>
+          </div>
+          <div class="game-row">
+            <a class="vote-link" href="#"><span>Server 1</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>Server 2</span><small>Open vote</small></a>
+          </div>
+          <button class="button button-secondary vote-all" onclick="openGameVotes('arksa')">Open All Ark SA</button>
+        </section>
 
-<!-- 7DTD -->
-<div class="card">
-<h3 class="section-title">🧟 7 Days to Die</h3>
-<button class="group-btn" onclick="handleOpen(links7d2d)">OPEN ALL 7DTD</button>
-<a class="server-link" href="https://7daystodie-servers.com/server/90387/" target="_blank">X</a>
-<a class="server-link" href="https://7daystodie-servers.com/server/90388/" target="_blank">XL</a>
-<a class="server-link" href="https://7daystodie-servers.com/server/90386/" target="_blank">SH</a>
-</div>
+        <section class="game-card" data-game="Conan">
+          <div class="game-top">
+            <h3 class="game-name">⚔️ Conan</h3>
+            <span class="game-pill">Survival</span>
+          </div>
+          <div class="game-row">
+            <a class="vote-link" href="#"><span>Server 1</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>Server 2</span><small>Open vote</small></a>
+          </div>
+          <button class="button button-secondary vote-all" onclick="openGameVotes('conan')">Open All Conan</button>
+        </section>
 
-<!-- Conan -->
-<div class="card">
-<h3 class="section-title">⚔️ Conan Exiles</h3>
-<button class="group-btn" onclick="handleOpen(linksConan)">OPEN ALL CONAN</button>
-<a class="server-link" href="https://conan-exiles.com/server/90870/" target="_blank">EL</a>
-<a class="server-link" href="https://conan-exiles.com/server/90985/" target="_blank">SEB</a>
-</div>
+        <section class="game-card" data-game="Empyrion">
+          <div class="game-top">
+            <h3 class="game-name">🚀 Empyrion</h3>
+            <span class="game-pill">Sci-fi</span>
+          </div>
+          <div class="game-row">
+            <a class="vote-link" href="#"><span>Server 1</span><small>Open vote</small></a>
+            <a class="vote-link" href="#"><span>Server 2</span><small>Open vote</small></a>
+          </div>
+          <button class="button button-secondary vote-all" onclick="openGameVotes('empyrion')">Open All Empyrion</button>
+        </section>
+      </div>
 
-<!-- Empyrion -->
-<div class="card">
-<h3 class="section-title">🚀 Empyrion</h3>
-<a class="server-link" href="https://empyrion-servers.com/server/65230/" target="_blank">Empyrion</a>
-</div>
+      <div class="support-grid">
+        <section class="support-card">
+          <h3>Desktop</h3>
+          <p>Best experience for opening multiple tabs at once. If needed, enable popups for this site first.</p>
+        </section>
+        <section class="support-card">
+          <h3>Mobile</h3>
+          <p>Use Chrome or your phone browser for the cleanest experience. In-app browsers may block tabs.</p>
+        </section>
+        <section class="support-card">
+          <h3>Manual fallback</h3>
+          <p>If anything does not open automatically, use the individual game vote buttons above and complete each vote manually.</p>
+        </section>
+      </div>
+    </div>
+  </main>
 
-<!-- Ark -->
-<div class="card">
-<h3 class="section-title">🦖 ARK</h3>
-<button class="group-btn" onclick="handleOpen(linksArk)">OPEN ALL ARK</button>
-<a class="server-link" href="https://ark-servers.net/server/331423/" target="_blank">Rag</a>
-<a class="server-link" href="https://ark-servers.net/server/330408/" target="_blank">Fjordur</a>
-<a class="server-link" href="https://ark-servers.net/server/330422/" target="_blank">Gen2</a>
-</div>
+  <footer class="footer">
+    <div class="shell">PRG Vote Hub • One place for all PRG voting links</div>
+  </footer>
 
-</div>
+  <script>
+    const voteGroups = {
+      all: [],
+      '7dtd': [],
+      arkse: [],
+      arksa: [],
+      conan: [],
+      empyrion: []
+    };
 
-<script>
-const links7d2d = [
-"https://7daystodie-servers.com/server/90387/",
-"https://7daystodie-servers.com/server/90388/",
-"https://7daystodie-servers.com/server/90386/"
-];
+    function openLinks(list) {
+      if (!Array.isArray(list) || !list.length) return;
+      list.forEach((url, index) => {
+        setTimeout(() => window.open(url, '_blank', 'noopener,noreferrer'), index * 180);
+      });
+    }
 
-const linksConan = [
-"https://conan-exiles.com/server/90870/",
-"https://conan-exiles.com/server/90985/"
-];
+    function openAllVotes() {
+      openLinks(voteGroups.all);
+    }
 
-const linksArk = [
-"https://ark-servers.net/server/331423/",
-"https://ark-servers.net/server/330408/",
-"https://ark-servers.net/server/330422/"
-];
-
-const allLinks = [
-...links7d2d,
-...linksConan,
-"https://empyrion-servers.com/server/65230/",
-...linksArk
-];
-
-function handleOpen(links) {
-  links.forEach(url => window.open(url, "_blank"));
-}
-</script>
-
+    function openGameVotes(key) {
+      openLinks(voteGroups[key] || []);
+    }
+  </script>
 </body>
 </html>
