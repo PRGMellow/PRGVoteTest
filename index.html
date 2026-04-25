@@ -117,6 +117,15 @@ h1 {
   line-height: 1.35;
 }
 
+.main-action-label {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #ff6b6b;
+  margin: 14px 0 6px;
+  opacity: 0.9;
+  font-weight: 800;
+}
+
 .main-btn,
 .group-btn,
 .single-btn {
@@ -136,7 +145,6 @@ h1 {
   box-shadow:
     0 0 25px rgba(255, 40, 40, 0.45),
     0 0 60px rgba(255, 40, 40, 0.25);
-  margin-top: 14px;
   transition: all 0.2s ease;
   animation: pulseGlow 2.8s ease-in-out infinite;
 }
@@ -146,6 +154,12 @@ h1 {
   box-shadow:
     0 0 35px rgba(255, 60, 60, 0.65),
     0 0 80px rgba(255, 60, 60, 0.35);
+}
+
+.main-btn:disabled {
+  cursor: default;
+  opacity: 0.75;
+  transform: none;
 }
 
 @keyframes pulseGlow {
@@ -272,12 +286,14 @@ h1 {
       ⚠️ Allow popups — OPEN ALL may not open every tab otherwise.
     </div>
 
-    <button class="main-btn" onclick="handleOpen(allLinks)">
+    <p class="main-action-label">FASTEST WAY TO VOTE</p>
+
+    <button class="main-btn" onclick="openVotes(this, allLinks, '🔥 OPEN ALL VOTES 🔥')">
       🔥 OPEN ALL VOTES 🔥
     </button>
 
     <div class="fallback-line">
-      If tabs don’t open, use the game buttons below.
+      If tabs don’t open, click the game sections below.
     </div>
 
     <hr class="divider">
@@ -285,7 +301,7 @@ h1 {
 
   <div class="card">
     <h3 class="section-title">🧟 7 Days to Die</h3>
-    <button class="group-btn" onclick="handleOpen(links7d2d)">OPEN ALL 7DTD VOTES</button>
+    <button class="group-btn" onclick="openVotes(this, links7d2d, 'OPEN ALL 7DTD VOTES')">OPEN ALL 7DTD VOTES</button>
     <a class="server-link" href="https://7daystodie-servers.com/server/90387/" target="_blank">X</a>
     <a class="server-link" href="https://7daystodie-servers.com/server/90388/" target="_blank">XL</a>
     <a class="server-link" href="https://7daystodie-servers.com/server/90386/" target="_blank">SH</a>
@@ -298,7 +314,7 @@ h1 {
 
   <div class="card">
     <h3 class="section-title">🦖 ARK</h3>
-    <button class="group-btn" onclick="handleOpen(linksArk)">OPEN ALL ARK VOTES</button>
+    <button class="group-btn" onclick="openVotes(this, linksArk, 'OPEN ALL ARK VOTES')">OPEN ALL ARK VOTES</button>
     <a class="server-link" href="https://ark-servers.net/server/331423/" target="_blank">Rag</a>
     <a class="server-link" href="https://ark-servers.net/server/330408/" target="_blank">Fjordur</a>
     <a class="server-link" href="https://ark-servers.net/server/330422/" target="_blank">Gen2</a>
@@ -311,7 +327,7 @@ h1 {
 
   <div class="card">
     <h3 class="section-title">⚔️ Conan Exiles</h3>
-    <button class="group-btn" onclick="handleOpen(linksConan)">OPEN ALL CONAN VOTES</button>
+    <button class="group-btn" onclick="openVotes(this, linksConan, 'OPEN ALL CONAN VOTES')">OPEN ALL CONAN VOTES</button>
     <a class="server-link" href="https://conan-exiles.com/server/90870/" target="_blank">EL</a>
     <a class="server-link" href="https://conan-exiles.com/server/90985/" target="_blank">SEB</a>
   </div>
@@ -354,6 +370,18 @@ function handleOpen(links) {
       window.open(url, "_blank", "noopener,noreferrer");
     }, index * 150);
   });
+}
+
+function openVotes(btn, links, originalText) {
+  btn.innerText = "Opening votes...";
+  btn.disabled = true;
+
+  handleOpen(links);
+
+  setTimeout(() => {
+    btn.innerText = originalText;
+    btn.disabled = false;
+  }, 2500);
 }
 </script>
 </body>
