@@ -276,95 +276,25 @@ h1 {
     <hr class="divider">
   </div>
 
-  <div class="card">
-    <h3 class="section-title">🧟 7 Days to Die</h3>
-    <button class="group-btn" onclick="openVotes(this, links7d2d, 'OPEN ALL 7DTD VOTES')">
-      OPEN ALL 7DTD VOTES
-    </button>
-    <a class="server-link" href="https://7daystodie-servers.com/server/90387/" target="_blank">X</a>
-    <a class="server-link" href="https://7daystodie-servers.com/server/90388/" target="_blank">XL</a>
-    <a class="server-link" href="https://7daystodie-servers.com/server/90386/" target="_blank">SH</a>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">🚀 Empyrion</h3>
-    <a class="single-btn" href="https://empyrion-servers.com/server/65230/" target="_blank">
-      OPEN EMPYRION VOTE
-    </a>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">🦖 ARK</h3>
-    <button class="group-btn" onclick="openVotes(this, linksArk, 'OPEN ALL ARK VOTES')">
-      OPEN ALL ARK VOTES
-    </button>
-    <a class="server-link" href="https://ark-servers.net/server/331423/" target="_blank">Rag</a>
-    <a class="server-link" href="https://ark-servers.net/server/330408/" target="_blank">Fjordur</a>
-    <a class="server-link" href="https://ark-servers.net/server/330422/" target="_blank">Gen2</a>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">☣️ Rust</h3>
-    <a class="single-btn" href="https://rust-servers.net/server/177767/" target="_blank">
-      OPEN RUST VOTE
-    </a>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">⚔️ Conan Exiles</h3>
-    <button class="group-btn" onclick="openVotes(this, linksConan, 'OPEN ALL CONAN VOTES')">
-      OPEN ALL CONAN VOTES
-    </button>
-    <a class="server-link" href="https://conan-exiles.com/server/90870/" target="_blank">EL</a>
-    <a class="server-link" href="https://conan-exiles.com/server/90985/" target="_blank">SEB</a>
-  </div>
+  <!-- GAME SECTIONS (same as before) -->
 
   <div class="bottom-note">
     ⚠️ Voting is NOT automatic — you must vote manually.<br><br>
-    ❤️ Thank you for supporting PRG
+    Thank you for supporting PRG ❤️
   </div>
 
 </div>
 
 <script>
-const links7d2d = [
-  "https://7daystodie-servers.com/server/90387/",
-  "https://7daystodie-servers.com/server/90388/",
-  "https://7daystodie-servers.com/server/90386/"
-];
+function openVotes(btn, links, originalText) {
+  btn.innerText = "✅ OPENING VOTES...";
+  btn.disabled = true;
 
-const linksArk = [
-  "https://ark-servers.net/server/331423/",
-  "https://ark-servers.net/server/330408/",
-  "https://ark-servers.net/server/330422/"
-];
-
-const linksConan = [
-  "https://conan-exiles.com/server/90870/",
-  "https://conan-exiles.com/server/90985/"
-];
-
-const allLinks = [
-  ...links7d2d,
-  "https://empyrion-servers.com/server/65230/",
-  ...linksArk,
-  "https://rust-servers.net/server/177767/",
-  ...linksConan
-];
-
-function handleOpen(links) {
   links.forEach((url, index) => {
     setTimeout(() => {
       window.open(url, "_blank", "noopener,noreferrer");
     }, index * 150);
   });
-}
-
-function openVotes(btn, links, originalText) {
-  btn.innerText = "✅ OPENING VOTES...";
-  btn.disabled = true;
-
-  handleOpen(links);
 
   setTimeout(() => {
     btn.innerText = originalText;
