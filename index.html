@@ -78,13 +78,13 @@ h1 {
 }
 
 .subtitle {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   font-size: 13px;
   color: #e9c4c4;
 }
 
 .quick-info {
-  margin: 12px 0 14px;
+  margin: 14px 0 14px;
   display: grid;
   gap: 7px;
   font-size: 14px;
@@ -115,15 +115,6 @@ h1 {
   border: 1px solid var(--notice-border);
   font-size: 13px;
   line-height: 1.35;
-}
-
-.main-action-label {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: #ff6b6b;
-  margin: 14px 0 6px;
-  opacity: 0.9;
-  font-weight: 800;
 }
 
 .main-btn,
@@ -275,22 +266,20 @@ h1 {
     <h1>PRG Vote Hub</h1>
     <p class="subtitle">All vote links for every game in one place</p>
 
+    <button class="main-btn" onclick="openVotes(this, allLinks, '🔥 OPEN ALL VOTES 🔥')">
+      🔥 OPEN ALL VOTES 🔥
+    </button>
+
     <div class="quick-info">
-      <div>👉 Click OPEN ALL VOTES → vote on each site → earn rewards</div>
+      <div>👉 Vote on each site → earn rewards</div>
       <div>📱 Open in browser (Discord may block links)</div>
     </div>
 
     <p class="support-line">Thank you for supporting PRG ❤️</p>
 
     <div class="premium-notice">
-      ⚠️ Allow popups — OPEN ALL may not open every tab otherwise.
+      ⚠️ Allow popups so OPEN ALL can launch every vote site.
     </div>
-
-    <p class="main-action-label">FASTEST WAY TO VOTE</p>
-
-    <button class="main-btn" onclick="openVotes(this, allLinks, '🔥 OPEN ALL VOTES 🔥')">
-      🔥 OPEN ALL VOTES 🔥
-    </button>
 
     <div class="fallback-line">
       If tabs don’t open, click the game sections below.
@@ -373,7 +362,7 @@ function handleOpen(links) {
 }
 
 function openVotes(btn, links, originalText) {
-  btn.innerText = "Opening votes...";
+  btn.innerText = "✅ OPENING VOTES...";
   btn.disabled = true;
 
   handleOpen(links);
@@ -381,7 +370,7 @@ function openVotes(btn, links, originalText) {
   setTimeout(() => {
     btn.innerText = originalText;
     btn.disabled = false;
-  }, 2500);
+  }, 4000);
 }
 </script>
 </body>
